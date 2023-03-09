@@ -6,7 +6,12 @@ import React, { ReactElement } from 'react';
 import 'tailwindcss/tailwind.css';
 import '../../assets/styles/styles.css';
 
-import { AppContext, AppStateContextType } from './contexts/AppContext';
+import {
+  AppContext,
+  AppStateContextType,
+  PlaybackAppStateContextType,
+  ThemeAppStateContextType,
+} from './contexts/AppContext';
 import {
   AppUpdateContext,
   AppUpdateContextType,
@@ -2254,6 +2259,37 @@ export default function App() {
       });
     },
     []
+  );
+
+  const themeStateContextValues: ThemeAppStateContextType = React.useMemo(
+    () => ({
+      isDarkMode: content.isDarkMode,
+    }),
+    [content.isDarkMode]
+  );
+
+  const playbackStateContextValues: PlaybackAppStateContextType = React.useMemo(
+    () => ({
+      volume: content.player.volume.value,
+      isMuted: content.player.volume.isMuted,
+      isRepeating: content.player.isRepeating,
+      isShuffling: content.player.isShuffling,
+      isPlayerStalled: content.player.isPlayerStalled,
+      currentSongData: {
+        ...content.currentSongData,
+        duration: player.duration || content.currentSongData.duration,
+      },
+      isCurrentSongPlaying: content.player.isCurrentSongPlaying,
+    }),
+    [
+      content.currentSongData,
+      content.player.isCurrentSongPlaying,
+      content.player.isPlayerStalled,
+      content.player.isRepeating,
+      content.player.isShuffling,
+      content.player.volume.isMuted,
+      content.player.volume.value,
+    ]
   );
 
   const appContextStateValues: AppStateContextType = React.useMemo(
